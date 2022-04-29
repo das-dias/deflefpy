@@ -1,12 +1,13 @@
 """_summary_
 A Python implementation for the DEF data structures.
 """
-#TODO
+# TODO
 from loguru import logger
 from util import Unsupported
 import os
 
+
 def test():
     feat = Unsupported("DEF Data Structures")
-    logger.info("{}".format(str(feat)))
-    logger.info("Project File: {}".format(os.path.abspath(__file__)))
+    logger.info(f"{str(feat)}")
+    logger.info(f"Project File: {os.path.abspath(__file__)}")

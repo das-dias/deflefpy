@@ -6,10 +6,11 @@ Github : /das-dias
 Date   : 2022-04-08
 """
 import numpy as np
-from enum import Enum # import enum to create enumerations
+from enum import Enum  # import enum to create enumerations
 from importlib.metadata import PathDistribution
 from pickletools import uint8
 from deflefpy.util import *
+
 
 class LefCoverClass(Enum):
     """_summary_
@@ -18,9 +19,10 @@ class LefCoverClass(Enum):
         None
         BUMP    : Bump cover.
     """
+
     None
     BUMP = 1
-    
+
 
 class LefBlockClass(Enum):
     """_summary_
@@ -29,9 +31,11 @@ class LefBlockClass(Enum):
         BLACKBOX    : Blackbox block.
         SOFT        : Soft block.
     """
+
     None
-    BLACKBOX    = 1
-    SOFT        = 2
+    BLACKBOX = 1
+    SOFT = 2
+
 
 class LefPadClass(Enum):
     """_summary_
@@ -44,14 +48,16 @@ class LefPadClass(Enum):
         SPACER      : Spacer pad.
         AREAIO      : Area I/O pad.
     """
+
     None
-    INPUT    = 1
-    OUTPUT   = 2
-    INOUT    = 3
-    POWER    = 4
-    SPACER   = 5
-    AREAIO   = 6
-    
+    INPUT = 1
+    OUTPUT = 2
+    INOUT = 3
+    POWER = 4
+    SPACER = 5
+    AREAIO = 6
+
+
 class LefCoreClass(Enum):
     """_summary_
     Types of LEF CORE statement values.
@@ -63,13 +69,15 @@ class LefCoreClass(Enum):
         ANTENNACELL : Antenna cell core.
         WELLTAP     : Welltap core.
     """
+
     None
-    FEEDTHRU    = 1
-    TIEHIGH     = 2
-    TIELOW      = 3
-    SPACER      = 4
+    FEEDTHRU = 1
+    TIEHIGH = 2
+    TIELOW = 3
+    SPACER = 4
     ANTENNACELL = 5
-    WELLTAP     = 6
+    WELLTAP = 6
+
 
 class LefEndcapClass(Enum):
     """_summary_
@@ -82,12 +90,14 @@ class LefEndcapClass(Enum):
         BOTTOMLEFT  : Bottom left Endcap.
         BOTTOMRIGHT : Bottom right Endcap.
     """
-    PRE         = 1
-    POST        = 2
-    TOPLEFT     = 3
-    TOPRIGHT    = 4
-    BOTTOMLEFT  = 5
-    BOTTOMRIGHT = 6      
+
+    PRE = 1
+    POST = 2
+    TOPLEFT = 3
+    TOPRIGHT = 4
+    BOTTOMLEFT = 5
+    BOTTOMRIGHT = 6
+
 
 class LefClassType(Enum):
     """_summary_
@@ -100,12 +110,14 @@ class LefClassType(Enum):
         CORE        : Core class.
         ENDCAP      : Endcap class.
     """
-    COVER       = LefCoverClass
-    RING        = 1
-    BLOCK       = LefBlockClass
-    PAD         = LefPadClass
-    CORE        = LefCoreClass
-    ENDCAP      = LefEndcapClass
+
+    COVER = LefCoverClass
+    RING = 1
+    BLOCK = LefBlockClass
+    PAD = LefPadClass
+    CORE = LefCoreClass
+    ENDCAP = LefEndcapClass
+
 
 class LefSymmetry(Enum):
     """_summary_
@@ -115,9 +127,11 @@ class LefSymmetry(Enum):
         Y   :  Symmetry along the y axis
         R90 : Symmetry along the 90 degree rotation
     """
-    X   = 1
-    Y   = 2
+
+    X = 1
+    Y = 2
     R90 = 3
+
 
 class LefOrient(Enum):
     """_summary_
@@ -132,14 +146,16 @@ class LefOrient(Enum):
         FE  :  Foreign Orientation along the East of the cell (180 deg rotation)
         FW  :  Foreign Orientation along the West of the cell (270 deg rotation)
     """
-    N   = 1
-    W   = 2
-    S   = 3
-    E   = 4
-    FN  = 5
-    FS  = 6
-    FE  = 7
-    FW  = 8
+
+    N = 1
+    W = 2
+    S = 3
+    E = 4
+    FN = 5
+    FS = 6
+    FE = 7
+    FW = 8
+
 
 class LefInOut(Enum):
     """_summary_
@@ -148,9 +164,11 @@ class LefInOut(Enum):
         None    : regular Input/Output
         TRISTATE: Tristate Input/Output
     """
+
     None
     TRISTATE = 1
-    
+
+
 class LefDirection(Enum):
     """_summary_
     Possible values for the DIRECTION LEF statement.
@@ -159,12 +177,14 @@ class LefDirection(Enum):
         OUTPUT  : Output direction
         INOUT   : Inout direction
         FEEDTHRU: Feedthru direction
-        
+
     """
-    INPUT   = LefInOut
-    OUTPUT  = LefInOut
-    INOUT   = 1
-    FEEDTHRU= 2
+
+    INPUT = LefInOut
+    OUTPUT = LefInOut
+    INOUT = 1
+    FEEDTHRU = 2
+
 
 class LefUse(Enum):
     """_summary_
@@ -176,11 +196,13 @@ class LefUse(Enum):
         GROUND  : Ground
         CLOCK   : Clock use of the pin
     """
-    SIGNAL  = 1
-    ANALOG  = 2
-    POWER   = 3
-    GROUND  = 4
-    CLOCK   = 5    
+
+    SIGNAL = 1
+    ANALOG = 2
+    POWER = 3
+    GROUND = 4
+    CLOCK = 5
+
 
 class LefShape(Enum):
     """_summary_
@@ -190,10 +212,11 @@ class LefShape(Enum):
         RING     : Ring shape
         FEEDTHRU : Feedthru shape
     """
-    ABUTMENT    = 1
-    RING        = 2
-    FEEDTHRU    = 3
-    
+
+    ABUTMENT = 1
+    RING = 2
+    FEEDTHRU = 3
+
 
 class LefForeign(LefStatement):
     """_summary_
@@ -201,11 +224,13 @@ class LefForeign(LefStatement):
     Args:
         object (_type_): LefForeign class object
     """
-    def __init__ (  self,
-                    foreignCellName:str, 
-                    offset: LefPoint = LefPoint(0,0),
-                    orient: LefOrient = LefOrient.N,
-                ):
+
+    def __init__(
+        self,
+        foreignCellName: str,
+        offset: LefPoint = LefPoint(0, 0),
+        orient: LefOrient = LefOrient.N,
+    ):
         """_summary_
         The class object constructor.
         Args:
@@ -216,14 +241,15 @@ class LefForeign(LefStatement):
         self.foreignCellName = foreignCellName
         self.offset = offset
         self.orient = orient
-    
+
     def __str__(self):
         """_summary_
         The class object str description.
         Args:
             object (LefForeign): statement object
         """
-        return "LefForeign: {} {} {} {} {}".format(self.type.name, self.name, self.foreignCellName, self.offset, self.orient)
+        return f"LefForeign: {self.type.name} {self.name} {self.foreignCellName} {self.offset} {self.orient}"
+
 
 class LefSize(LefStatement):
     """_summary_
@@ -237,19 +263,19 @@ class LefSize(LefStatement):
     Returns:
         _type_: _description_
     """
-    def __init__(   self,
-                    width: LefDecimal,
-                    height: LefDecimal
-                ):
+
+    def __init__(self, width: LefDecimal, height: LefDecimal):
         self.height = height
         self.width = width
+
     def __str__(self):
         """_summary_
         A str representation of the object.
         Args:
             object (LefSize): LefSize object
         """
-        return "SIZE {} BY {}".format(self.width, self.height)
+        return f"SIZE {self.width} BY {self.height}"
+
 
 class LefSitePattern(LefStatement):
     """_summary_
@@ -263,23 +289,26 @@ class LefSitePattern(LefStatement):
     Returns:
         _type_: _description_
     """
-    def __init__(   self,
-                    xOrigin: LefDecimal,
-                    yOrigin: LefDecimal,
-                    siteOrient: LefOrient,
-                    stepPattern: LefStepPattern = None    
-                ):
+
+    def __init__(
+        self,
+        xOrigin: LefDecimal,
+        yOrigin: LefDecimal,
+        siteOrient: LefOrient,
+        stepPattern: LefStepPattern = None,
+    ):
         self.origin = LefPoint(xOrigin, yOrigin)
         self.siteOrient = siteOrient
         self.stepPattern = stepPattern
-    
+
     def __str__(self):
         """_summary_
         A str representation of the object.
         Args:
             object (LefSitePattern): LefSitePattern object
         """
-        return "{} {} {}".format(self.origin, self.siteOrient.name, self.stepPattern)
+        return f"{self.origin} {self.siteOrient.name} {self.stepPattern}"
+
 
 class LefRowpattern(LefStatement):
     """_summary_
@@ -293,14 +322,18 @@ class LefRowpattern(LefStatement):
     Returns:
         _type_: _description_
     """
-    def __init__(   self,
-                    prevSiteName: str,
-                    prevSiteOrient: LefOrient,
-                ):
+
+    def __init__(
+        self,
+        prevSiteName: str,
+        prevSiteOrient: LefOrient,
+    ):
         self.prevSiteName = prevSiteName
         self.prevSiteOrient = prevSiteOrient
+
     def __str__(self):
-        return "ROWPATTERN {} {}".format(self.prevSiteName, self.prevSiteOrient.name)
+        return f"ROWPATTERN {self.prevSiteName} {self.prevSiteOrient.name}"
+
 
 class LefSite(LefStatement):
     """_summary_
@@ -312,10 +345,12 @@ class LefSite(LefStatement):
     Returns:
         _type_: _description_
     """
-    def __init__(   self, 
-                    name: str, 
-                    type: LefStatementType,
-                ):
+
+    def __init__(
+        self,
+        name: str,
+        type: LefStatementType,
+    ):
         """_summary_
         The class object constructor.
         Args:
@@ -327,8 +362,8 @@ class LefSite(LefStatement):
             raise TypeError("LefSite: type must be SITE")
         self.type = type
         self.siteClass = None
-        self.symmetry = [] # simmetry list
-        self.rowpattern = [] # row pattern list
+        self.symmetry = []  # simmetry list
+        self.rowpattern = []  # row pattern list
         self.size = None
         self.sitePattern = None
 
@@ -349,12 +384,12 @@ class LefSite(LefStatement):
         if statement == "CLASS":
             if type(value) != LefClassType:
                 raise TypeError("LefSite: CLASS needs to be LefClassType object")
-            self.siteClass = value # value will be a LefClassType object
+            self.siteClass = value  # value will be a LefClassType object
         elif statement == "SYMMETRY":
             if type(value) != LefSymmetry:
                 raise TypeError("LefSite: SYMMETRY needs to be LefSymmetry object")
             self.symmetry.append(value)
-        elif statement ==  "ROWPATTERN":
+        elif statement == "ROWPATTERN":
             if type(value) != LefRowpattern:
                 raise TypeError("LefSite: ROWPATTERN needs to be LefRowpattern object")
             self.rowpattern.append(value)
@@ -362,18 +397,16 @@ class LefSite(LefStatement):
             if type(value) != LefSize:
                 raise TypeError("LefSite: SIZE needs to be LefSize object")
             self.size = value
-        else :
-            raise TypeError("LefSite: {} is not a valid statement".format(statement))
+        else:
+            raise TypeError(f"LefSite: {statement} is not a valid statement")
 
 
 class LefProperty(LefStatement):
     """_summary_
     A LEF PROPERTY statement data structure
     """
-    def __init__(   self,
-                    name: str,
-                    value
-                ):
+
+    def __init__(self, name: str, value):
         """_summary_
         The class object constructor.
         Args:
@@ -385,10 +418,10 @@ class LefProperty(LefStatement):
         self.name = name
         if type(value) != str or type(value) != LefDecimal:
             raise TypeError("LefProperty: value must be str or LefDecimal")
-        self.value = value      
-    def __str__(self):
-        return "PROPERTY {} {}".format(self.name, self.value)
+        self.value = value
 
+    def __str__(self):
+        return f"PROPERTY {self.name} {self.value}"
 
 
 class LefPin(LefStatement):
@@ -400,9 +433,8 @@ class LefPin(LefStatement):
     Returns:
         _type_: _description_
     """
-    def __init__(   self,
-                    name: str
-                ):
+
+    def __init__(self, name: str):
         """_summary_
         The class object constructor.
         Args:
@@ -422,7 +454,7 @@ class LefPin(LefStatement):
         self.port = []
         self.property = {}
         self.propertyLef58ViaInPinOnly = ""
-        
+
         # antenna fields
         self.antennaPartialMetalArea = []
         self.antennaPartialMetalSideArea = []
@@ -433,14 +465,14 @@ class LefPin(LefStatement):
         self.antennaMaxAreaCar = []
         self.antennaMaxSideAreaCar = []
         self.antennaMaxCutCar = []
-    
+
     def __str__(self):
         """_summary_
         str representation of LEF PIN macro statement.
         Returns:
             ret (str): str representation
         """
-        ret = "PIN {}".format(self.name)
+        ret = f"PIN {self.name}"
         if self.taperRule != "":
             ret += "\tTAPERRULE {} ;\n".format(self.taperRule)
         if self.direction != None:
@@ -462,7 +494,9 @@ class LefPin(LefStatement):
         for prop in self.property.values():
             ret += "\t{} ;\n".format(str(prop))
         if self.propertyLef58ViaInPinOnly != "":
-            ret += "\tPROPERTY Lef58ViaInPinOnly {} ;\n".format(self.propertyLef58ViaInPinOnly)
+            ret += "\tPROPERTY Lef58ViaInPinOnly {} ;\n".format(
+                self.propertyLef58ViaInPinOnly
+            )
         for a in self.antennaPartialMetalArea:
             ret += "\t{} ;\n".format(str(a))
         for a in self.antennaPartialMetalSideArea:
@@ -483,7 +517,7 @@ class LefPin(LefStatement):
             ret += "\t{} ;\n".format(str(a))
         ret += "END {}\n".format(self.name)
         return ret
-    
+
     def parse_data(self, data):
         """_summary_
         Parses data into the PIN LEF data structure in order to build its constituent fields.
@@ -514,11 +548,15 @@ class LefPin(LefStatement):
             self.netExpr = value
         elif statement == "SUPPLYSENSITIVITY":
             if type(value) != str:
-                raise TypeError("LefPin: SUPPLYSENSITIVITY value must be a str with the Supply Pin Name")
+                raise TypeError(
+                    "LefPin: SUPPLYSENSITIVITY value must be a str with the Supply Pin Name"
+                )
             self.supplySensitivity = value
         elif statement == "GROUNDSENSITIVITY":
             if type(value) != str:
-                raise TypeError("LefPin: GROUNDSENSITIVITY value must be a str with the Ground Pin Name")
+                raise TypeError(
+                    "LefPin: GROUNDSENSITIVITY value must be a str with the Ground Pin Name"
+                )
             self.groundSensitivity = value
         elif statement == "SHAPE":
             if type(value) != LefShape:
@@ -526,7 +564,9 @@ class LefPin(LefStatement):
             self.shape = value
         elif statement == "MUSTJOIN":
             if type(value) != str:
-                raise TypeError("LefPin: MUSTJOIN value must be a str with the Pin Name")
+                raise TypeError(
+                    "LefPin: MUSTJOIN value must be a str with the Pin Name"
+                )
             self.mustJoin = value
         elif statement == "PORT":
             if type(value) != LefPort:
@@ -534,70 +574,110 @@ class LefPin(LefStatement):
             self.port.append(value)
         elif statement == "PROPERTY":
             if type(value) != LefProperty:
-                raise TypeError("LefPin: PROPERTY value must be a LefProperty statement")
+                raise TypeError(
+                    "LefPin: PROPERTY value must be a LefProperty statement"
+                )
             self.property[value.name] = value
         elif statement == "PROPERTY_LEF58_VIAINPINONLY":
             if type(value) != str:
-                raise TypeError("LefPin: PROPERTY_LEF58_VIAINPINONLY value must be a str with the Pin Name")
+                raise TypeError(
+                    "LefPin: PROPERTY_LEF58_VIAINPINONLY value must be a str with the Pin Name"
+                )
             self.propertyLef58ViaInPinOnly = value
-            
-        # Antenna fields
+
         elif statement == "ANTENNAPARTIALMETALAREA":
             if type(value) != LefAntennaField:
-                raise TypeError("LefPin: ANTENNAPARTIALMETALAREA value must be a LefAntennaField statement")
+                raise TypeError(
+                    "LefPin: ANTENNAPARTIALMETALAREA value must be a LefAntennaField statement"
+                )
             if value.model != LefAntennaFieldType.ANTENNAPARTIALMETALAREA:
-                raise TypeError("LefPin: ANTENNAPARTIALMETALAREA statement value must be of type ANTENNAPARTIALMETALAREA")
+                raise TypeError(
+                    "LefPin: ANTENNAPARTIALMETALAREA statement value must be of type ANTENNAPARTIALMETALAREA"
+                )
             self.antennaPartialMetalArea.append(value)
         elif statement == "ANTENNAPARTIALMETALSIDEAREA":
             if type(value) != LefAntennaField:
-                raise TypeError("LefPin: ANTENNAPARTIALMETALSIDEAREA value must be a LefAntennaField statement")
+                raise TypeError(
+                    "LefPin: ANTENNAPARTIALMETALSIDEAREA value must be a LefAntennaField statement"
+                )
             if value.model != LefAntennaFieldType.ANTENNAPARTIALMETALSIDEAREA:
-                raise TypeError("LefPin: ANTENNAPARTIALMETALSIDEAREA statement value must be of type ANTENNAPARTIALMETALSIDEAREA")
+                raise TypeError(
+                    "LefPin: ANTENNAPARTIALMETALSIDEAREA statement value must be of type ANTENNAPARTIALMETALSIDEAREA"
+                )
             self.antennaPartialMetalSideArea.append(value)
         elif statement == "ANTENNAPARTIALCUTAREA":
             if type(value) != LefAntennaField:
-                raise TypeError("LefPin: ANTENNAPARTIALCUTAREA value must be a LefAntennaField statement")
+                raise TypeError(
+                    "LefPin: ANTENNAPARTIALCUTAREA value must be a LefAntennaField statement"
+                )
             if value.model != LefAntennaFieldType.ANTENNAPARTIALCUTAREA:
-                raise TypeError("LefPin: ANTENNAPARTIALCUTAREA statement value must be of type ANTENNAPARTIALCUTAREA")
+                raise TypeError(
+                    "LefPin: ANTENNAPARTIALCUTAREA statement value must be of type ANTENNAPARTIALCUTAREA"
+                )
             self.antennaPartialCutArea.append(value)
         elif statement == "ANTENNADIFFAREA":
             if type(value) != LefAntennaField:
-                raise TypeError("LefPin: ANTENNADIFFAREA value must be a LefAntennaField statement")
+                raise TypeError(
+                    "LefPin: ANTENNADIFFAREA value must be a LefAntennaField statement"
+                )
             if value.model != LefAntennaFieldType.ANTENNADIFFAREA:
-                raise TypeError("LefPin: ANTENNADIFFAREA statement value must be of type ANTENNADIFFAREA")
+                raise TypeError(
+                    "LefPin: ANTENNADIFFAREA statement value must be of type ANTENNADIFFAREA"
+                )
             self.antennaDiffArea.append(value)
         elif statement == "ANTENNAMODEL":
             if type(value) != LefAntennaField:
-                raise TypeError("LefPin: ANTENNAMODEL value must be a LefAntennaField statement")
+                raise TypeError(
+                    "LefPin: ANTENNAMODEL value must be a LefAntennaField statement"
+                )
             if value.model != LefAntennaFieldType.ANTENNAMODEL:
-                raise TypeError("LefPin: ANTENNAMODEL statement value must be of type ANTENNAMODEL")
+                raise TypeError(
+                    "LefPin: ANTENNAMODEL statement value must be of type ANTENNAMODEL"
+                )
             self.antennaModel.append(value)
         elif statement == "ANTENNAGATEAREA":
             if type(value) != LefAntennaField:
-                raise TypeError("LefPin: ANTENNAGATEAREA value must be a LefAntennaField statement")
+                raise TypeError(
+                    "LefPin: ANTENNAGATEAREA value must be a LefAntennaField statement"
+                )
             if value.model != LefAntennaFieldType.ANTENNAGATEAREA:
-                raise TypeError("LefPin: ANTENNAGATEAREA statement value must be of type ANTENNAGATEAREA")
+                raise TypeError(
+                    "LefPin: ANTENNAGATEAREA statement value must be of type ANTENNAGATEAREA"
+                )
             self.antennaGateArea.append(value)
         elif statement == "ANTENNAMAXAREACAR":
             if type(value) != LefAntennaField:
-                raise TypeError("LefPin: ANTENNAMAXAREACAR value must be a LefAntennaField statement")
+                raise TypeError(
+                    "LefPin: ANTENNAMAXAREACAR value must be a LefAntennaField statement"
+                )
             if value.model != LefAntennaFieldType.ANTENNAMAXAREACAR:
-                raise TypeError("LefPin: ANTENNAMAXAREACAR statement value must be of type ANTENNAMAXAREACAR")
+                raise TypeError(
+                    "LefPin: ANTENNAMAXAREACAR statement value must be of type ANTENNAMAXAREACAR"
+                )
             self.antennaMaxAreaCar.append(value)
         elif statement == "ANTENNAMAXSIDEAREACAR":
             if type(value) != LefAntennaField:
-                raise TypeError("LefPin: ANTENNAMAXSIDEAREACAR value must be a LefAntennaField statement")
+                raise TypeError(
+                    "LefPin: ANTENNAMAXSIDEAREACAR value must be a LefAntennaField statement"
+                )
             if value.model != LefAntennaFieldType.ANTENNAMAXSIDEAREACAR:
-                raise TypeError("LefPin: ANTENNAMAXSIDEAREACAR statement value must be of type ANTENNAMAXSIDEAREACAR")
+                raise TypeError(
+                    "LefPin: ANTENNAMAXSIDEAREACAR statement value must be of type ANTENNAMAXSIDEAREACAR"
+                )
             self.antennaMaxSideAreaCar.append(value)
         elif statement == "ANTENNAMAXCUTCAR":
             if type(value) != LefAntennaField:
-                raise TypeError("LefPin: ANTENNAMAXCUTCAR value must be a LefAntennaField statement")
+                raise TypeError(
+                    "LefPin: ANTENNAMAXCUTCAR value must be a LefAntennaField statement"
+                )
             if value.model != LefAntennaFieldType.ANTENNAMAXCUTCAR:
-                raise TypeError("LefPin: ANTENNAMAXCUTCAR statement value must be of type ANTENNAMAXCUTCAR")
+                raise TypeError(
+                    "LefPin: ANTENNAMAXCUTCAR statement value must be of type ANTENNAMAXCUTCAR"
+                )
             self.antennaMaxCutCar.append(value)
         else:
-            raise TypeError("LefPin: Unknown statement: " + statement)
+            raise TypeError(f"LefPin: Unknown statement: {statement}")
+
 
 class LefObs(LefStatement):
     """_summary_
@@ -605,6 +685,7 @@ class LefObs(LefStatement):
     Args:
         LefStatement (_type_): _description_
     """
+
     def __init__(self):
         """
         The class constructor.
@@ -613,8 +694,8 @@ class LefObs(LefStatement):
         """
         self.name = None
         self.type = LefClassType.OBS
-        self.layerGeometries = [] # layer geometries statements
-    
+        self.layerGeometries = []  # layer geometries statements
+
     def __str__(self):
         """
         The str representation of the class.
@@ -629,7 +710,7 @@ class LefObs(LefStatement):
             ret += "\t{} \n".format(str(lg))
         ret += "END"
         return ret
-    
+
     def parse_geometry(self, geometry):
         """
         Parse the geometry statement.
@@ -644,6 +725,7 @@ class LefObs(LefStatement):
             raise TypeError("LefObs: geometry must be a LefLayerGeometry statement")
         self.layerGeometries.append(geometry)
 
+
 class LefMacro(LefStatement):
     """_summary_
     Macro class of the Lef file.
@@ -652,24 +734,25 @@ class LefMacro(LefStatement):
         type (LefStatementType) : type of the statement (MACRO in this case)
         name (str)           : name of the macro
     """
+
     def __init__(self, type, name):
         if type != LefStatementType.MACRO:
             raise TypeError("LefMacro: type must be MACRO")
         self.type = type
         self.name = name
-        self.macroClass = None # class of the macro
-        self.fixedMask = False # fixed mask of the macro
-        self.foreign = {} # foreign statements
-        self.origin = None # origin of the macro
-        self.eeqMacro = None # equivalent eeschema macro name (None = "")
-        self.size = None # size of the macro
-        self.symetry = [] # symetry statement values
-        self.sites = {} # sites of the macro
-        self.pins = {} # dictionary of pin statements
-        self.obs = {} # dictionary of obstruction statements
-        self.density = {} # dictionary of density statements
-        self.properties = {} # dictionary of property statements
-    
+        self.macroClass = None  # class of the macro
+        self.fixedMask = False  # fixed mask of the macro
+        self.foreign = {}  # foreign statements
+        self.origin = None  # origin of the macro
+        self.eeqMacro = None  # equivalent eeschema macro name (None = "")
+        self.size = None  # size of the macro
+        self.symetry = []  # symetry statement values
+        self.sites = {}  # sites of the macro
+        self.pins = {}  # dictionary of pin statements
+        self.obs = {}  # dictionary of obstruction statements
+        self.density = {}  # dictionary of density statements
+        self.properties = {}  # dictionary of property statements
+
     def __str__(self):
         """_summary_
         The class object str description.
@@ -677,7 +760,7 @@ class LefMacro(LefStatement):
             object (LefMacro): statement object
         """
         return super().__str__()
-    
+
     def parse_data(self, data):
         """_summary_
         Method to add information relative to a class obejct field.
@@ -695,19 +778,19 @@ class LefMacro(LefStatement):
         elif statement == "FOREIGN":
             if type(value) != LefForeign:
                 raise TypeError("LefMacro: FOREIGN needs to be LefForeign object")
-            self.foreign[value.foreignCellName] = value# value is a LefForeign object
+            self.foreign[value.foreignCellName] = value  # value is a LefForeign object
         elif statement == "ORIGIN":
             if type(value) != LefPoint:
                 raise TypeError("LefMacro: ORIGIN needs to be LefPoint object")
-            self.origin = value # value is an LEF point
+            self.origin = value  # value is an LEF point
         elif statement == "EEQ":
             if type(value) != str:
                 raise TypeError("LefMacro: EEQ needs to be str")
-            self.eeq = value # value is a str
+            self.eeq = value  # value is a str
         elif statement == "SIZE":
             if type(value) != LefSize:
                 raise TypeError("LefMacro: SIZE needs to be LefSize object")
-            self.size = value # value is a LefSize object
+            self.size = value  # value is a LefSize object
         elif statement == "SYMMETRY":
             if type(value) != LefSymmetry:
                 raise TypeError("LefSite: SYMMETRY needs to be LefSymmetry object")
@@ -715,7 +798,7 @@ class LefMacro(LefStatement):
         elif statement == "SITE":
             if type(value) != LefSite:
                 raise TypeError("LefMacro: SITE needs to be LefSite object")
-            self.sites[value.name] = value # value is a LefSite object
+            self.sites[value.name] = value  # value is a LefSite object
         elif statement == "PIN":
             if type(value) != LefPin:
                 raise TypeError("LefMacro: PIN needs to be LefPin object")
@@ -733,8 +816,9 @@ class LefMacro(LefStatement):
                 raise TypeError("LefMacro: PROPERTY needs to be LefProperty object")
             self.properties[value.name] = value
         else:
-            raise TypeError("LefMacro: {} is not a valid statement".format(statement))
-     
+            raise TypeError(f"LefMacro: {statement} is not a valid statement")
+
+
 class LefLayerType(Enum):
     """
     Enum class for the LEF layer statement types.
@@ -744,24 +828,28 @@ class LefLayerType(Enum):
         MASTERSLICE : masterslice layer type
         OVERLAP     : overlap layer type
     """
-    CUT         = 1
-    ROUTING     = 2
+
+    CUT = 1
+    ROUTING = 2
     MASTERSLICE = 3
-    OVERLAP     = 4
+    OVERLAP = 4
+
 
 class LefLayer(LefStatement):
-    def __init__(self,name, layerType: LefLayerType):
+    def __init__(self, name, layerType: LefLayerType):
         self.type = layerType
         self.name = name
+
     def __str__(self):
-        return "{} {}".format(self.type.name, self.name)
+        return f"{self.type.name} {self.name}"
+
 
 class LefLayerCut(LefLayer):
     def __init__(self, name):
         """_summary_
         Class constructor.
         Args:
-            name (str): name of the layer 
+            name (str): name of the layer
         """
         super().__init__(name, LefLayerType.CUT)
         self.mask = None
@@ -785,7 +873,7 @@ class LefLayerCut(LefLayer):
         self.antennaGatePlusDiff = None
         self.antennaAreaMinusDiff = None
         self.antennaAreaDiffReducePWL = None
-    
+
     def __str__(self):
         """_summary_
         The class object string description.
@@ -840,57 +928,66 @@ class LefLayerCut(LefLayer):
             ret += "\t{}\n".format(str(self.antennaAreaDiffReducePWL))
         ret += "END {}\n".format(self.name)
         return ret
-    
-    def parseData(self, data): # TODO : add the parsing of the data
+
+    def parseData(self, data):  # TODO : add the parsing of the data
         raise NotImplementedError("LefLayerCut: parseData not implemented")
-    
-    
-class LefLayerRouting(LefLayer): # TODO : implement
+
+
+class LefLayerRouting(LefLayer):  # TODO : implement
     """_summary_
     A LEF LAYER of TYPE ROUTING statement.
     Args:
         LefLayer (_type_): _description_
     """
+
     def __init__(self):
         raise NotImplementedError("LefLayerRouting: not implemented")
-    
-class LefVia(LefStatement): # TODO : implement
+
+
+class LefVia(LefStatement):  # TODO : implement
     """_summary_
     A LEF VIA (DEFAULT) statement.
     Args:
         LefLayer (_type_): _description_
     """
+
     def __init__(self):
         raise NotImplementedError("LefVia: not implemented")
 
-class LefViaRule(LefStatement): # TODO : implement
+
+class LefViaRule(LefStatement):  # TODO : implement
     """_summary_
     A LEF VIARULE statement, of type GENERATE or not.
     Args:
         LefLayer (_type_): _description_
     """
+
     def __init__(self):
         raise NotImplementedError("LefViaRule: not implemented")
 
-class LefUnits(LefStatement): # TODO : implement
+
+class LefUnits(LefStatement):  # TODO : implement
     """_summary_
     An LEF LIBRARY UNITS statement.
     Args:
         LefStatement (_type_): _description_
     """
+
     def __init__(self):
         raise NotImplementedError("LefUnits: not implemented")
-    
-class LefLibrary(LefStatement): # TODO : implement
+
+
+class LefLibrary(LefStatement):  # TODO : implement
     """_summary_
     an LEF LIBRARY data structure holding all the info regarding
     a technology node declared inside the ".lef" or ".tlef" file.
     Args:
         LefStatement (_type_): _description_
     """
+
     def __init__(self):
         raise NotImplementedError("LefLibrary: not implemented")
-    
+
 
 #   TODO: IMPLEMENT LEF/TLEF LIBRARY MODULE
 #   TODO: IMPLEMENT LEF_WRITE FILE

@@ -9,14 +9,18 @@ from pickletools import uint8
 import pstats
 import numpy as np
 
+
 class Unsupported(object):
     """_summary_
     A class that represents an unsupported feature.
     """
+
     def __init__(self, feature):
         self.feature = feature
+
     def __str__(self):
-        return "Unsupported feature: {}".format(self.feature)
+        return f"Unsupported feature: {self.feature}"
+
 
 """
 List of possible LFEF keywords
@@ -100,27 +104,29 @@ LEF_STATEMENTS = [
     "RMS",
 ]
 
+
 class LefDecimal:
     """_summary_
     A special LEF decimal representation.
     Args:
         object (LefDecimal): LefDecimal class object
     """
-    def __init__(self, value:float):
+
+    def __init__(self, value: float):
         """_summary_
         The class object constructor.
         Args:
             value (float) : decimal value.
         """
         self.value = value
-    
+
     def __str__(self):
         """_summary_
         The class object string description.
         Args:
             object (LefDecimal): LefDecimal class object
         """
-        return "{}".format(self.value)
+        return f"{self.value}"
 
     def __add__(self, other):
         """_summary_
@@ -129,7 +135,7 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return LefDecimal(self.value + other.value)
-    
+
     def __sub__(self, other):
         """_summary_
         The class object subtraction operator.
@@ -137,6 +143,7 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return LefDecimal(self.value - other.value)
+
     def __mult__(self, other):
         """_summary_
         The class object multiplication operator.
@@ -144,6 +151,7 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return LefDecimal(self.value * other.value)
+
     def __truediv__(self, other):
         """_summary_
         The class object division operator.
@@ -151,6 +159,7 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return LefDecimal(self.value / other.value)
+
     def __floordiv__(self, other):
         """_summary_
         The class object division operator.
@@ -158,6 +167,7 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return LefDecimal(self.value // other.value)
+
     def __mod__(self, other):
         """_summary_
         The class object modulus division operator.
@@ -181,7 +191,7 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return self.value != other.value
-    
+
     def __lt__(self, other):
         """_summary_
         The class object less than operator.
@@ -189,7 +199,7 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return self.value < other.value
-    
+
     def __le__(self, other):
         """_summary_
         The class object less than or equal operator.
@@ -197,7 +207,7 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return self.value <= other.value
-    
+
     def __gt__(self, other):
         """_summary_
         The class object greater than operator.
@@ -205,7 +215,7 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return self.value > other.value
-    
+
     def __ge__(self, other):
         """_summary_
         The class object greater than or equal operator.
@@ -213,7 +223,7 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return self.value >= other.value
-    
+
     def __neg__(self):
         """_summary_
         The class object negation operator.
@@ -221,7 +231,7 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return LefDecimal(-self.value)
-    
+
     def __abs__(self):
         """_summary_
         The class object absolute value operator.
@@ -229,7 +239,7 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return LefDecimal(abs(self.value))
-    
+
     def __round__(self, ndigits=None):
         """_summary_
         The class object rounding operator.
@@ -237,27 +247,32 @@ class LefDecimal:
             object (LefDecimal): LefDecimal class object
         """
         return LefDecimal(round(self.value, ndigits))
-    
-    
+
+
 class LefPoint:
     """_summary_
     A point for LEF geometries.
-    
+
     Raises:
         TypeError: _description_
 
     Returns:
         _type_: _description_
     """
-    def __init__(self, x:float, y:float):
+
+    def __init__(self, x: float, y: float):
         self.x = LefDecimal(x)
         self.y = LefDecimal(y)
+
     def __add__(self, other):
         return LefPoint(self.x + other.x, self.y + other.y)
+
     def __sub__(self, other):
         return LefPoint(self.x - other.x, self.y - other.y)
+
     def __str__(self):
-        return "({}, {})".format(self.x, self.y)
+        return f"({self.x}, {self.y})"
+
 
 class LefStepPattern(object):
     """_summary_
@@ -271,23 +286,23 @@ class LefStepPattern(object):
     Returns:
         _type_: _description_
     """
-    def __init__(   self, 
-                    xCount: uint8,
-                    yCount: uint8, 
-                    xStep:  LefDecimal, 
-                    yStep:  LefDecimal
-                ):
+
+    def __init__(
+        self, xCount: uint8, yCount: uint8, xStep: LefDecimal, yStep: LefDecimal
+    ):
         self.xCount = xCount
         self.yCount = yCount
         self.xStep = xStep
         self.yStep = yStep
+
     def __str__(self):
         """_summary_
         A string representation of the object.
         Args:
             object (LefStepPattern): LefStepPattern object
         """
-        return "DO {} BY {} STEP {} {}".format(self.xCount, self.yCount, self.xStep, self.yStep)
+        return f"DO {self.xCount} BY {self.yCount} STEP {self.xStep} {self.yStep}"
+
 
 class LefGeometryClass(Enum):
     """_summary_
@@ -298,53 +313,51 @@ class LefGeometryClass(Enum):
         POLYGON : Polygon
         VIA     : Via
     """
-    LAYER   = 0
-    RECT    = 1
-    PATH    = 2
+
+    LAYER = 0
+    RECT = 1
+    PATH = 2
     POLYGON = 3
-    VIA     = 4
-    
+    VIA = 4
+
 
 class LefGeometry(object):
     """_summary_
     A geometry parent class for LEF geometries.
     """
+
     def __init__(self, type):
         """_summary_
         The class object constructor.
         Args:
             type (LefGeometryClass): The geometry type.
-            points (list): 
+            points (list):
         """
         self.type = type
         self.mask = None
         self.iterate = False
         self.points = None
         self.stepPattern = None
-        
+
     def __str__(self):
         rets = ""
-        points = "{}".format(" ".join([str(p) for p in self.points]))
+        points = f'{" ".join([str(p) for p in self.points])}'
+        rets = f"{self.type.name} "
         if self.type != LefGeometryClass.VIA:
-            rets = "{} ".format(self.type.name)
             if self.mask != None:
-                rets += "MASK {} ".format(str(self.mask))
+                rets += f"MASK {str(self.mask)} "
             if self.iterate:
                 rets += "ITERATE "
-            rets += points
-            if self.stepPattern != None:
-                rets += " {}".format(str(self.stepPattern))
         else:
-            rets = "{} ".format(self.type.name)
             if self.iterate:
                 rets += "ITERATE "
             if self.mask != None:
-                rets += "MASK {} ".format(str(self.mask))
-            rets += points
-            if self.stepPattern != None:
-                rets += " {}".format(str(self.stepPattern))
+                rets += f"MASK {str(self.mask)} "
+        rets += points
+        if self.stepPattern != None:
+            rets += f" {str(self.stepPattern)}"
         return rets
-    
+
     def parse_data(self, data):
         """_summary_
         Parse the geometry data into the geometry object fields.
@@ -362,8 +375,8 @@ class LefGeometry(object):
                 raise TypeError("ITERATE value must be a boolean")
             self.iterate = True
         else:
-            raise TypeError("Unknown geometry statement: {}".format(statement))
-    
+            raise TypeError(f"Unknown geometry statement: {statement}")
+
     def add_points(self, points: list):
         """_summary_
         Adds the points to the LEF geometry object.
@@ -375,20 +388,16 @@ class LefGeometry(object):
         """
         if self.points is None:
             raise TypeError("Points must be added")
-        if self.type == LefGeometryClass.PATH:
-            if len(points) < 2:
-                raise TypeError("Path must have at least 2 points")
-        if self.type == LefGeometryClass.POLYGON:
-            if len(points) < 3:
-                raise TypeError("Polygon must have at least 3 points")
-        if self.type == LefGeometryClass.VIA:
-            if len(points) != 1:
-                raise TypeError("Via must have exactly 1 point")
-        if self.type == LefGeometryClass.RECT:
-            if len(points) != 2:
-                raise TypeError("Rectangle must have exactly 2 points")
+        if self.type == LefGeometryClass.PATH and len(points) < 2:
+            raise TypeError("Path must have at least 2 points")
+        if self.type == LefGeometryClass.POLYGON and len(points) < 3:
+            raise TypeError("Polygon must have at least 3 points")
+        if self.type == LefGeometryClass.VIA and len(points) != 1:
+            raise TypeError("Via must have exactly 1 point")
+        if self.type == LefGeometryClass.RECT and len(points) != 2:
+            raise TypeError("Rectangle must have exactly 2 points")
         self.points = np.ndarray([LefPoint(p[0], p[1]) for p in points])
-        
+
     def add_stepPattern(self, stepPattern: LefStepPattern):
         """_summary_
         Adds the step pattern to the LEF geometry object.
@@ -400,28 +409,29 @@ class LefGeometry(object):
         if self.stepPattern is None:
             raise TypeError("Step pattern is None")
         self.stepPattern = stepPattern
-    
+
+
 class LefRect(LefGeometry):
     """_summary_
     A child class for LEF RECT geometries.
     """
+
     def __init__(self, type):
         super().__init__(LefGeometryClass.RECT)
         self.density = None
-        
+
     def __str__(self):
         ret = super().__str__()
         if self.density != None:
-            ret += " {}".format(self.density)
+            ret += f" {self.density}"
         return ret
 
-    
     def add_points(self, points: list):
         return super().add_points(points)
-    
+
     def add_stepPattern(self, stepPattern: LefStepPattern):
         return super().add_stepPattern(stepPattern)
-    
+
     def add_density(self, density):
         """_summary_
         Adds the density to the LEF geometry object.
@@ -438,23 +448,23 @@ class LefRect(LefGeometry):
             self.density = LefDecimal(density)
         else:
             raise TypeError("Density must be a float or LefDecimal")
-        
-    
-    
+
+
 class LefPath(LefGeometry):
     """_summary_
     A child class for LEF PATH geometries.
     """
+
     def __init__(self, type):
         super().__init__(LefGeometryClass.PATH)
         self.pathWidth = None
-        
+
     def __str__(self):
         return super().__str__()
-    
+
     def add_points(self, points: list):
         return super().add_points(points)
-    
+
     def add_pathWidth(self, pathWidth):
         """_summary_
         Adds the path width to the geometry object.
@@ -471,9 +481,10 @@ class LefPath(LefGeometry):
             self.pathWidth = pathWidth
         else:
             raise TypeError("Path width must be a float or LefDecimal")
-        
+
     def add_stepPattern(self, stepPattern: LefStepPattern):
         return super().add_stepPattern(stepPattern)
+
 
 class LefDesignRuleWidth(object):
     def __init__(self, value):
@@ -483,24 +494,26 @@ class LefDesignRuleWidth(object):
             self.value = value
         else:
             raise TypeError("Design rule width must be a float or LefDecimal")
+
     def __str__(self):
-        return "DESIGNRULEWIDTH {}".format(str(self.value))
+        return f"DESIGNRULEWIDTH {str(self.value)}"
 
 
 class LefViaGeom(LefGeometry):
     """_summary_
     A child class for LEF VIA geometries.
     """
+
     def __init__(self):
         super().__init__(LefGeometryClass.VIA)
         self.viaWidth = None
-        
+
     def __str__(self):
         return super().__str__()
-    
+
     def add_points(self, points: list):
         return super().add_points(points)
-    
+
     def add_viaWidth(self, viaWidth: float):
         """_summary_
         Adds the via width to the geometry object.
@@ -517,7 +530,8 @@ class LefViaGeom(LefGeometry):
 
     def add_stepPattern(self, stepPattern: LefStepPattern):
         return super().add_stepPattern(stepPattern)
-        
+
+
 class LefLayerGeom(LefGeometry):
     def __init__(self, name: str):
         super().__init__(LefGeometryClass.LAYER)
@@ -526,7 +540,7 @@ class LefLayerGeom(LefGeometry):
         self.designRule = None
         self.width = None
         self.geometries = []
-        
+
     def __str__(self):
         ret = "LAYER {}\n".format(self.name)
         if self.exceptPgNet:
@@ -556,10 +570,12 @@ class LefLayerGeom(LefGeometry):
         elif statement == "DESIGNRULEWIDTH":
             if type(value) == LefDesignRuleWidth:
                 self.designRule = value
-            elif type(value) == LefDecimal or type(value) == float:
+            elif type(value) in [LefDecimal, float]:
                 self.designRule = LefDesignRuleWidth(value)
-            else:    
-                raise TypeError("DESIGNRULEWIDTH value must be a LefDesignRuleWidth object")
+            else:
+                raise TypeError(
+                    "DESIGNRULEWIDTH value must be a LefDesignRuleWidth object"
+                )
         elif statement == "WIDTH":
             if type(value) == float:
                 self.width = LefDecimal(value)
@@ -580,24 +596,26 @@ class LefLayerGeom(LefGeometry):
                 raise TypeError("POLYGON value must be a LefPolygon object")
             self.geometries.append(value)
         else:
-            raise TypeError("Unknown geometry statement: {}".format(statement))
-        
+            raise TypeError(f"Unknown geometry statement: {statement}")
+
 
 class LefPolygon(LefGeometry):
     """_summary_
     A child class for LEF RECT geometries.
     """
+
     def __init__(self):
         super().__init__(LefGeometryClass.POLYGON)
-        
+
     def __str__(self):
         return super().__str__()
-    
+
     def add_points(self, points: list):
         return super().add_points(points)
-    
+
     def add_stepPattern(self, stepPattern: LefStepPattern):
         return super().add_stepPattern(stepPattern)
+
 
 class LefSpacingValType(Enum):
     """_summary_
@@ -608,10 +626,12 @@ class LefSpacingValType(Enum):
         PARALLELOVERLAP : Parallel overlap statement
         AREA            : Area statement
     """
-    LAYER           = 1
-    ADJACENTCUTS    = 2
+
+    LAYER = 1
+    ADJACENTCUTS = 2
     PARALLELOVERLAP = 3
-    AREA            = 4
+    AREA = 4
+
 
 class LefSecondaryLayer(object):
     """_summary_
@@ -619,15 +639,17 @@ class LefSecondaryLayer(object):
     Args:
         object (_type_): _description_
     """
+
     def __init__(self, layerName: str, stack: bool):
         self.layerName = layerName
         self.stack = stack
-        
+
     def __str__(self):
-        ret = "LAYER {}".format(self.layerName)
+        ret = f"LAYER {self.layerName}"
         if self.stack:
             ret += " STACK"
         return ret
+
 
 class LefAdjacentCuts(object):
     """_summary_
@@ -635,6 +657,7 @@ class LefAdjacentCuts(object):
     Args:
         object (_type_): _description_
     """
+
     def __init__(self, numVia: uint8, cutWithin: float, exceptSamePgNet: bool):
         if numVia not in [2, 3, 4]:
             raise ValueError("Number of vias must be 2, 3, or 4")
@@ -643,33 +666,37 @@ class LefAdjacentCuts(object):
         self.exceptSamePgNet = exceptSamePgNet
 
     def __str__(self):
-        ret = "ADJACENTCUTS {} WITHIN {}".format(self.numVia, self.cutWithin)
+        ret = f"ADJACENTCUTS {self.numVia} WITHIN {self.cutWithin}"
         if self.exceptSamePgNet:
             ret += " EXCEPTSAMEPGNET"
         return ret
-    
+
+
 class LefSpacing(object):
     """_summary_
     An LEF Spacing table.
     Args:
         object (_type_): _description_
     """
+
     def __init__(self, cutSpacing: float):
         self.cutSpacing = LefDecimal(cutSpacing)
         self.centerToCenter = False
         self.sameNet = False
         self.valueType = None
         self.value = None
+
     def __str__(self) -> str:
-        ret = "SPACING {}".format(self.cutSpacing)
+        ret = f"SPACING {self.cutSpacing}"
         if self.centerToCenter:
             ret += "\n\tCENTERTOCENTER"
         if self.sameNet:
             ret += "\n\tSAMENET"
         if self.valueType is not None:
-            if self.valueType == LefSpacingValType.LAYER:
-                ret += "\n\t{}".format(str(self.value))
-            elif self.valueType == LefSpacingValType.ADJACENTCUTS:
+            if self.valueType in [
+                LefSpacingValType.LAYER,
+                LefSpacingValType.ADJACENTCUTS,
+            ]:
                 ret += "\n\t{}".format(str(self.value))
             elif self.valueType == LefSpacingValType.PARALLELOVERLAP:
                 ret += "\n\t{}".format(self.valueType.name)
@@ -679,6 +706,7 @@ class LefSpacing(object):
                 raise ValueError("Unknown value type")
         ret += "\n;"
         return ret
+
     def parse_data(self, data):
         statement = data[0]
         value = data[1]
@@ -690,12 +718,12 @@ class LefSpacing(object):
             if type(value) is not LefSecondaryLayer:
                 raise TypeError("Value must be a LefLayerGeom object")
             self.valueType = LefSpacingValType.LAYER
-            self.value = value # value is a LefSecondaryLayer object
+            self.value = value  # value is a LefSecondaryLayer object
         elif statement == "ADJACENTCUTS":
             if type(value) is not LefAdjacentCuts:
                 raise TypeError("Value must be a LefAdjacentCuts object")
             self.valueType = LefSpacingValType.ADJACENTCUTS
-            self.value = value # value is a LefAdjacentCuts object
+            self.value = value  # value is a LefAdjacentCuts object
         elif statement == "PARALLELOVERLAP":
             self.valueType = LefSpacingValType.PARALLELOVERLAP
         elif statement == "AREA":
@@ -708,24 +736,24 @@ class LefSpacing(object):
                 raise TypeError("Value must be a float or LefDecimal object")
         else:
             raise ValueError("Unknown statement")
-        
 
 
-#TODO: develop LayerGeometry Class as part of layer geometries
+# TODO: develop LayerGeometry Class as part of layer geometries
 class LefLayerGeometry(object):
     """_summary_
     A LEF LAYER GEOMETRY statement for MACROs.
     Args:
         object (_type_): _description_
     """
+
     def __init__(self, name: str):
         """_summary_
         Class constructor.
         Args:
             name (str)              : name of the layer geometry
         """
-        self.geometries = [] 
-        
+        self.geometries = []
+
     def __str__(self):
         """_summary_
         Returns a string representation of the object.
@@ -734,10 +762,7 @@ class LefLayerGeometry(object):
         Returns:
             str : string representation of the object
         """
-        ret = ""
-        for geom in self.geometries:
-            ret += "\t{} ;\n".format(str(geom))
-        return ret
+        return "".join("\t{} ;\n".format(str(geom)) for geom in self.geometries)
 
     def add_geometry(self, geom):
         """_summary_
@@ -745,13 +770,14 @@ class LefLayerGeometry(object):
         Args:
             geom (LefGeometry) : geometry to add
         """
-        if type(geom) is LefLayerGeom:
-            self.geometries.append(geom)
-        elif type(geom) is LefViaGeom:
+        if type(geom) is LefLayerGeom or type(geom) is LefViaGeom:
             self.geometries.append(geom)
         else:
-            raise TypeError("Layer Geometry must be a LefLayerGeom or LefViaGeom object")
-    
+            raise TypeError(
+                "Layer Geometry must be a LefLayerGeom or LefViaGeom object"
+            )
+
+
 class LefDensity(object):
     def __init__(self):
         """_summary_
@@ -759,11 +785,11 @@ class LefDensity(object):
         Args:
             object (_type_): LefDensity object
         """
-        self._currentLayer = "" # state variable to know
-                                # to which layer the rect 
-                                # will be declared in
+        self._currentLayer = ""  # state variable to know
+        # to which layer the rect
+        # will be declared in
         self.layerRectDict = defaultdict(list)
-        
+
     def __str__(self):
         """_summary_
         String representation of the object.
@@ -779,12 +805,13 @@ class LefDensity(object):
                 ret += "\t\t{} ;\n".format(str(rect))
         ret += "END"
         return ret
+
     def parse_data(self, data):
         """_summary_
-        Parses the data and adds the rectangles to the 
+        Parses the data and adds the rectangles to the
         respective layer in the DENSITY statement.
-        Args:   
-            data (Tuple): (statement, value) 
+        Args:
+            data (Tuple): (statement, value)
         Raises:
             TypeError: Value must be a nust be a string
             TypeError: Value must be a LefRect object
@@ -798,15 +825,19 @@ class LefDensity(object):
             self._currentLayer = value
         elif statement == "RECT":
             if type(value) is not LefRect:
-                raise TypeError("Value following RECT statement must be a LefRect object")
+                raise TypeError(
+                    "Value following RECT statement must be a LefRect object"
+                )
             self.layerRectDict[self._currentLayer].append(value)
         else:
             raise ValueError("Unknown statement")
+
 
 class LefPieceWiseLinearInterpol(object):
     """_summary_
     LEF Piecewise Linear interpolation data struct (PWL).
     """
+
     def __init__(self, points):
         """_summary_
         The class object constructor.
@@ -814,14 +845,16 @@ class LefPieceWiseLinearInterpol(object):
             points (list): list of points
         """
         self.points = np.ndarray([LefPoint(p[0], p[1]) for p in points])
+
     def __str__(self):
         """_summary_
         A str representation of the LEF PWL statement value.
         Args:
             object (LefPieceWiseLinearInterpol): LEF PWL value
         """
-        points ="".join([" ( {} ) ".format(str(p)) for p in self.points])
-        return "PWL ({})".format(points)
+        points = "".join([f" ( {str(p)} ) " for p in self.points])
+        return f"PWL ({points})"
+
 
 class LefAntennaFieldType(Enum):
     """_summary_
@@ -831,6 +864,7 @@ class LefAntennaFieldType(Enum):
         ANTENNAPARTIALMETALAREA : ANTENNAPARTIALMETALAREA statement
         ...
     """
+
     ANTENNAMODEL = 1
     ANTENNAPARTIALMETALAREA = 2
     ANTENNAPARTIALMETALSIDEAREA = 3
@@ -850,6 +884,7 @@ class LefAntennaFieldType(Enum):
     ANTENNAAREAMINUSDIFF = 17
     ANTENNAAREADIFFREDUCEPWL = 18
 
+
 class LefAntennaModel(Enum):
     """_summary_
     Enumeration of possible antenna model types.
@@ -859,18 +894,22 @@ class LefAntennaModel(Enum):
         OXIDE3 : oxide3 antenna type
         OXIDE4 : oxide4 antenna type
     """
+
     OXIDE1 = 1
     OXIDE2 = 2
     OXIDE3 = 3
     OXIDE4 = 4
 
+
 class LefAntennaField(object):
     """_summary_
     A LEF ANTENNA FIELD statement data structure
     """
-    def __init__(   self,
-                    fieldType: LefAntennaFieldType,
-                ):
+
+    def __init__(
+        self,
+        fieldType: LefAntennaFieldType,
+    ):
         """_summary_
         The class object constructor.
         Args:
@@ -883,24 +922,26 @@ class LefAntennaField(object):
             raise TypeError("LefAntennaField: fieldType must be LefAntennaFieldType")
         self.fieldType = fieldType
         self.layerName = ""
-        self.value = None # can either be LefDecimal or PWL class object, or a antenna model
+        self.value = (
+            None  # can either be LefDecimal or PWL class object, or a antenna model
+        )
         self.diffuseOnly = False
-        
+
     def __str__(self):
         """_summary_
         str representation of the LEF ANTENNA FIELD statement value.
         Returns:
             ret (str): str representation of the LEF ANTENNA FIELD statement
         """
-        ret = "{}".format(self.fieldType.name)
+        ret = f"{self.fieldType.name}"
         if self.value != None:
-            ret += " {}".format(str(self.value))
+            ret += f" {str(self.value)}"
         if self.layerName != "":
-            ret += " LAYER {}".format(self.layerName)
+            ret += f" LAYER {self.layerName}"
         if self.diffuseOnly:
             ret += " DIFFUSEONLY"
         return ret
-    
+
     def parse_data(self, data):
         """_summary_
         Parses the data for the LEF ANTENNA FIELD statement.
@@ -915,7 +956,9 @@ class LefAntennaField(object):
             self.layerName = value
         elif statement == "PWL":
             if type(value) != LefPieceWiseLinearInterpol:
-                raise TypeError("LefAntennaField: PWL needs to be LefPieceWiseLinearInterpol object")
+                raise TypeError(
+                    "LefAntennaField: PWL needs to be LefPieceWiseLinearInterpol object"
+                )
             self.value = value
         elif statement == "DIFFUSEONLY":
             self.diffuseOnly = True
@@ -928,29 +971,34 @@ class LefAntennaField(object):
         elif statement == "OXIDE4":
             self.value = LefAntennaModel.OXIDE4
         else:
-            raise TypeError("LefAntennaField: {} is not a valid statement".format(statement))
-        
+            raise TypeError(f"LefAntennaField: {statement} is not a valid statement")
+
+
 class LefPort(object):
     """_summary_
     A LEF PORT statement data structure
     """
+
     def __init__(self):
         self.name = None
         self.type = LefStatementType.PORT
         self.portClass = None
-        self.layerGeometries = []    
+        self.layerGeometries = []
+
     def __str__(self):
         ret = "PORT\n".format(self.name)
         if self.portClass != None:
             ret += "CLASS {} ;\n".format(self.portClass.name)
         for layerGeometry in self.layerGeometries:
-            ret += "{}\n".format(layerGeometry)         
+            ret += "{}\n".format(layerGeometry)
         return ret
+
 
 class LefWithin(object):
     """_summary_
     A LEF WITHIN statement data structure
     """
+
     def __init__(self, cutWithin, spacing):
         if type(cutWithin) == float:
             self.cutwithin = LefDecimal(cutWithin)
@@ -962,11 +1010,11 @@ class LefWithin(object):
             self.orthoSpacing = LefDecimal(spacing)
         elif type(spacing) == LefDecimal:
             self.orthoSpacing = spacing
-        else: 
-            raise TypeError("LefWithin: spacing must be LefDecimal or float")    
-    def __str__(self):
-        return "WITHIN {} SPACING {}".format(str(self.cutwithin), str(self.orthoSpacing))
+        else:
+            raise TypeError("LefWithin: spacing must be LefDecimal or float")
 
+    def __str__(self):
+        return f"WITHIN {str(self.cutwithin)} SPACING {str(self.orthoSpacing)}"
 
 
 class LefSpacingTableType(Enum):
@@ -976,15 +1024,18 @@ class LefSpacingTableType(Enum):
         None
         ORTHOGONAL : Orthogonal spacing table
     """
+
     None
     ORTHOGONAL = 1
+
+
 class LefSpacingTable(object):
     def __init__(self, type):
-        if type(type)!= LefSpacingTableType:
+        if type(type) != LefSpacingTableType:
             raise TypeError("LefSpacingTable: type must be LefSpacingTableType")
         self.type = type
         self.rows = []
-    
+
     def __str__(self):
         ret = "SPACINGTABLE"
         if self.type == LefSpacingTableType.ORTHOGONAL:
@@ -1004,43 +1055,46 @@ class LefSpacingTable(object):
             raise TypeError("LefSpacingTable: row must be LefWithin")
         self.rows.append(row)
 
-class LefTableEntries(object): # TODO: implement
+
+class LefTableEntries(object):  # TODO: implement
     def __init__(self) -> Unsupported:
         raise Unsupported("LefTableEntries: Not implemented")
-    
-    def __init__(self, rows = []):
+
+    def __init__(self, rows=[]):
         self.rows = []
-        if type(rows[0]) == list:
-            if type(rows[0][0]) != float and type(rows[0][0]) != LefDecimal:
-                raise TypeError("LefTableEntries: row entries must be LefDecimal or float")
-            for row in rows:
-                if type(row[0]) is LefDecimal: 
-                    self.rows.append(row)
-                else:
-                    self.rows.append([LefDecimal(val) for val in row])
-            
-        else:
-            raise TypeError("LefTableEntries: rows must be a list of LefDecimal or float")
-        
+        if type(rows[0]) != list:
+            raise TypeError(
+                "LefTableEntries: rows must be a list of LefDecimal or float"
+            )
+        if type(rows[0][0]) not in [float, LefDecimal]:
+            raise TypeError("LefTableEntries: row entries must be LefDecimal or float")
+        for row in rows:
+            if type(row[0]) is LefDecimal:
+                self.rows.append(row)
+            else:
+                self.rows.append([LefDecimal(val) for val in row])
+
     def __str__(self):
         ret = "TABLEENTRIES\n"
         for row in self.rows:
-            rowStr = "".join(["{} ".format(str(val)) for val in row])
+            rowStr = "".join([f"{str(val)} " for val in row])
             ret += "\t{}\n".format(rowStr)
         return ret
-    
-    def addRow(self, row = []):
+
+    def addRow(self, row=[]):
         if type(row[0]) == LefDecimal:
             self.rows.append(row)
         elif type(row[0]) == float:
             self.rows.append([LefDecimal(val) for val in row])
         else:
             raise TypeError("LefTableEntries: row entries must be LefDecimal or float")
-        
+
+
 class LefArrayCuts(object):
     """_summary_
     A LEF ARRAYCUTS statement data structure
     """
+
     def __init__(self, arrayCuts, arraySpacing):
         if type(arrayCuts) == float:
             self.arrayCuts = LefDecimal(arrayCuts)
@@ -1052,10 +1106,12 @@ class LefArrayCuts(object):
             self.arraySpacing = LefDecimal(arraySpacing)
         elif type(arraySpacing) == LefDecimal:
             self.orthoSpacing = arraySpacing
-        else: 
-            raise TypeError("LefArrayCuts: arraySpacing must be LefDecimal or float")    
+        else:
+            raise TypeError("LefArrayCuts: arraySpacing must be LefDecimal or float")
+
     def __str__(self):
-        return "ARRAYCUTS {} SPACING {}".format(str(self.arrayCuts), str(self.arraySpacing))
+        return f"ARRAYCUTS {str(self.arrayCuts)} SPACING {str(self.arraySpacing)}"
+
 
 class LefArrayTable(object):
     def __init__(self):
@@ -1063,6 +1119,7 @@ class LefArrayTable(object):
         self.viaWidth = None
         self.cutSpacing = None
         self.rows = []
+
     def __str__(self):
         ret = "ARRAYTABLE"
         if self.longArray:
@@ -1075,11 +1132,12 @@ class LefArrayTable(object):
             ret += "\t{}\n".format(str(row))
         ret += ";"
         return ret
+
     def parse_row(self, row):
         if type(row) != LefArrayCuts:
             raise TypeError("LefArrayTable: row must be LefArrayCuts")
         self.rows.append(row)
-    
+
     def parse_data(self, data):
         statement = data[0]
         value = data[1]
@@ -1100,7 +1158,8 @@ class LefArrayTable(object):
             else:
                 raise TypeError("LefArrayTable: CUTSPACING must be LefDecimal or float")
         else:
-            raise TypeError("LefArrayTable: {} is not a valid statement".format(statement))
+            raise TypeError(f"LefArrayTable: {statement} is not a valid statement")
+
 
 class LefParamType(Enum):
     """_summary_
@@ -1108,11 +1167,13 @@ class LefParamType(Enum):
     Args:
         Enum (_type_): _description_
     """
+
     LENGTH = 1
-    WIDTH  = 2
-    
+    WIDTH = 2
+
+
 class LefParam(object):
-    def __init__(self, typo:LefParamType, minParam, maxParam = None):
+    def __init__(self, typo: LefParamType, minParam, maxParam=None):
         """_summary_
         Class constructor
         Args:
@@ -1137,20 +1198,20 @@ class LefParam(object):
             else:
                 raise TypeError("LefParam: maxParam must be LefDecimal or float")
         self.exceptExtraCut = None
-        
+
     def __str__(self):
         """_summary_
         String representation of the object statement
         Returns:
             _type_: _description_
         """
-        ret = "{} {}".format(self.type.name, str(self.minParam))
+        ret = f"{self.type.name} {str(self.minParam)}"
         if self.maxParam != None:
-            ret += " {}".format(str(self.maxParam))
+            ret += f" {str(self.maxParam)}"
         if self.exceptExtraCut != None:
-            ret += " EXCEPTEXTRACUT {}".format(str(self.exceptExtraCut))
+            ret += f" EXCEPTEXTRACUT {str(self.exceptExtraCut)}"
         return ret
-    
+
     def addExceptExtraCut(self, cutWithin):
         """_summary_
         Add an EXCEPTEXTRACUT statement
@@ -1164,8 +1225,9 @@ class LefParam(object):
         else:
             raise TypeError("LefParam: exceptExtraCut must be LefDecimal or float")
 
+
 class LefWidth(LefParam):
-    def __init__(self, minWidth, maxWidth = None):
+    def __init__(self, minWidth, maxWidth=None):
         """_summary_
         Class constructor
         Args:
@@ -1175,6 +1237,7 @@ class LefWidth(LefParam):
             TypeError: width must be LefDecimal or float
         """
         super().__init__(LefParamType.WIDTH, minWidth, maxWidth)
+
     def __str__(self):
         """_summary_
         String representation of the object statement
@@ -1182,7 +1245,7 @@ class LefWidth(LefParam):
             _type_: _description_
         """
         super.__str__()
-        
+
     def addExceptExtraCut(self, cutWithin):
         """_summary_
         Add an EXCEPTEXTRACUT statement
@@ -1191,8 +1254,9 @@ class LefWidth(LefParam):
         """
         super.addExceptExtraCut(cutWithin)
 
+
 class LefLength(LefParam):
-    def __init__(self, minLength, maxLength = None):
+    def __init__(self, minLength, maxLength=None):
         """_summary_
         Class constructor
         Args:
@@ -1202,6 +1266,7 @@ class LefLength(LefParam):
             TypeError: length must be LefDecimal or float
         """
         super().__init__(LefParamType.LENGTH, minLength, maxLength)
+
     def __str__(self):
         """_summary_
         String representation of the object statement
@@ -1209,55 +1274,65 @@ class LefLength(LefParam):
             _type_: _description_
         """
         super.__str__()
+
     # doens't feature EXCEPTEXTRACUT statement
+
 
 class LefEnclosureClass(Enum):
     ABOVE = 1
     BELOW = 2
+
+
 class LefEnclosure(object):
     """_summary_
     A LEF ENCLOSURE statement data structure
     Args:
         object (_type_): _description_
     """
-    def __init__(   self, overhang1, overhang2, 
-                    side: LefEnclosureClass = None, 
-                    enclosureParam = None
-                ):
+
+    def __init__(
+        self, overhang1, overhang2, side: LefEnclosureClass = None, enclosureParam=None
+    ):
         self.side = side
         self.overhang1 = overhang1
         self.overhang2 = overhang2
         self.enclosureParam = None
         if enclosureParam != None:
-            if type(enclosureParam) == LefWidth:
-                self.enclosureParam = enclosureParam
-            elif type(enclosureParam) == LefLength:
+            if type(enclosureParam) in [LefWidth, LefLength]:
                 self.enclosureParam = enclosureParam
             else:
-                raise TypeError("LefEnclosure: enclosureParam must be LefWidth or LefLength")
+                raise TypeError(
+                    "LefEnclosure: enclosureParam must be LefWidth or LefLength"
+                )
 
     def __str__(self):
         ret = "ENCLOSURE"
         if self.side != None:
-            ret += " {}".format(self.side.name)
+            ret += f" {self.side.name}"
         ret += " {} {}\n".format(str(self.overhang1), str(self.overhang2))
         if self.enclosureParam != None:
             ret += "\t{}\n".format(str(self.enclosureParam))
         ret += ";"
         return ret
 
+
 class LefPreferEnclosure(LefEnclosure):
-    def __init__(self, overhang1, overhang2, 
-                 side: LefEnclosureClass = None,
-                 enclosureParam: LefWidth = None):
+    def __init__(
+        self,
+        overhang1,
+        overhang2,
+        side: LefEnclosureClass = None,
+        enclosureParam: LefWidth = None,
+    ):
         """_summary_
 
         Raises:
-        
+
         Returns:
             _type_: _description_
         """
         super.__init__(overhang1, overhang2, side, enclosureParam)
+
     def __str__(self):
         """_summary_
         String representation of the object statement
@@ -1266,12 +1341,13 @@ class LefPreferEnclosure(LefEnclosure):
         """
         ret = "PREFERENCLOSURE"
         if self.side != None:
-            ret += " {}".format(self.side.name)
-        ret += " {} {}".format(str(self.overhang1), str(self.overhang2))
+            ret += f" {self.side.name}"
+        ret += f" {str(self.overhang1)} {str(self.overhang2)}"
         if self.enclosureParam != None:
-            ret += " {}".format(str(self.enclosureParam))
+            ret += f" {str(self.enclosureParam)}"
         ret += " ;"
         return ret
+
 
 class LefFloatType(Enum):
     """_summary_
@@ -1283,13 +1359,15 @@ class LefFloatType(Enum):
         RPERSQ      : resistance per square floating point
         CPERSQDIST  : capacitance per square distance floating point
     """
+
     None
-    AVERAGE     = 1
-    PEAK        = 2
-    RMS         = 3
-    RPERSQ      = 4
-    CPERSQDIST  = 5
-    
+    AVERAGE = 1
+    PEAK = 2
+    RMS = 3
+    RPERSQ = 4
+    CPERSQDIST = 5
+
+
 class LefUnitType(Enum):
     """_summary_
     LEF unit types for each available statement
@@ -1297,29 +1375,31 @@ class LefUnitType(Enum):
        PICOFARADS : picoFarad
        OHMS       : ohm
        NANOSECONDS: nanosecond
-       HERTZ      : hertz 
+       HERTZ      : hertz
     """
+
     None
-    PICOFARAD   = 1
-    OHMS        = 2
+    PICOFARAD = 1
+    OHMS = 2
     NANOSECONDS = 3
-    HERTZ       = 5
-    
+    HERTZ = 5
+
+
 class LefUnit(object):
     def __init__(self, unitType, unitValue):
         self.unitType = None
         if unitType is not None:
-            if type(unitType) == LefFloatType or type(unitType) == LefUnitType:
+            if type(unitType) in [LefFloatType, LefUnitType]:
                 self.unitType = unitType
             else:
                 raise TypeError("LefUnit: unitType must be LefFloatType or LefUnitType")
-        if type(unitValue) == LefDecimal or type(unitValue) == int:
+        if type(unitValue) in [LefDecimal, int]:
             self.unitValue = unitValue
         elif type(unitValue) == float:
             self.unitValue = LefDecimal(unitValue)
         else:
             raise TypeError("LefUnit: unitValue must be LefDecimal, float or integer")
-        
+
     def __str__(self):
         """_summary_
         String representation of the object statement
@@ -1328,13 +1408,13 @@ class LefUnit(object):
         """
         ret = ""
         if self.unitType is not None:
-            ret = "{} {}".format(self.unitType.name, str(self.unitValue))
+            return f"{self.unitType.name} {str(self.unitValue)}"
         else:
-            ret = str(self.unitValue)
-        return ret
+            return str(self.unitValue)
+
 
 class LefResistance(LefUnit):
-    def __init__(self, resistance, unitType = None):
+    def __init__(self, resistance, unitType=None):
         """_summary_
         Class constructor
         Args:
@@ -1343,40 +1423,44 @@ class LefResistance(LefUnit):
         Raises:
             TypeError: resistance must be LefDecimal or float
         """
-        if unitType is not None:
-            if unitType is LefUnitType.OHMS or unitType is LefFloatType.RPERSQ:
-                super().__init__(unitType, resistance)
-            else:
-                raise TypeError("LefResistance: type must be LefUnitType.OHMS or LefFloatType.RPERSQ")
-        else:
+        if unitType is None:
             super().__init__(None, resistance)
-        
+
+        elif unitType is LefUnitType.OHMS or unitType is LefFloatType.RPERSQ:
+            super().__init__(unitType, resistance)
+        else:
+            raise TypeError(
+                "LefResistance: type must be LefUnitType.OHMS or LefFloatType.RPERSQ"
+            )
+
     def __str__(self):
-        return "RESISTANCE {}".format(super().__str__())
+        return f"RESISTANCE {super().__str__()}"
+
 
 class LefCurrentDensityTableValue(object):
     def __init__(self):
         self.frequencies = []
         self.cutAreas = []
         self.tableEntries = None
+
     def __str__(self):
-        ret = ""
-        if len(self.frequencies) > 0:
-            ret += "FREQUENCY"
-            for freq in self.frequencies:
-                ret += " {}".format(str(freq))
-            ret += " ;\n"
-        else:
-            raise ValueError("LefCurrentDensityTableValue: frequencies must not be an empty list")
+        if len(self.frequencies) <= 0:
+            raise ValueError(
+                "LefCurrentDensityTableValue: frequencies must not be an empty list"
+            )
+        ret = "" + "FREQUENCY"
+        for freq in self.frequencies:
+            ret += f" {str(freq)}"
+        ret += " ;\n"
         if len(self.cutAreas) > 0:
             ret += "CUTAREA"
             for cutArea in self.cutAreas:
-                ret += " {}".format(str(cutArea))
+                ret += f" {str(cutArea)}"
             ret += " ;\n"
         if self.tableEntries is not None:
             ret += str(self.tableEntries)
         return ret
-    
+
     def parseFrequency(self, frequency):
         """_summary_
         Adds a frequency to the list of frequencies
@@ -1385,10 +1469,13 @@ class LefCurrentDensityTableValue(object):
         Raises:
             TypeError: frequency must be LefDecimal or float
         """
-        if type(frequency) == LefDecimal or type(frequency) == float:
+        if type(frequency) in [LefDecimal, float]:
             self.frequencies.append(frequency)
         else:
-            raise TypeError("LefCurrentDensityTableValue: frequency must be LefDecimal or float")
+            raise TypeError(
+                "LefCurrentDensityTableValue: frequency must be LefDecimal or float"
+            )
+
     def parseCutArea(self, cutArea):
         """_summary_
         Adds a cut area to the list of cut areas
@@ -1397,14 +1484,17 @@ class LefCurrentDensityTableValue(object):
         Raises:
             TypeError: cutArea must be LefDecimal or float
         """
-        if type(cutArea) == LefDecimal or type(cutArea) == float:
+        if type(cutArea) in [LefDecimal, float]:
             self.cutAreas.append(cutArea)
         else:
-            raise TypeError("LefCurrentDensityTableValue: cutArea must be LefDecimal or float")
-    
-    def parseTableEntry(self, tableEntries:LefTableEntries):
+            raise TypeError(
+                "LefCurrentDensityTableValue: cutArea must be LefDecimal or float"
+            )
+
+    def parseTableEntry(self, tableEntries: LefTableEntries):
         self.tableEntries = tableEntries
-    
+
+
 class LefCurrentDensityType(Enum):
     """_summary_
     LEF Current Density statement types
@@ -1412,62 +1502,81 @@ class LefCurrentDensityType(Enum):
         AC : AC current density statement (ACCURRENTDENSITY)
         DC : DC current density statement (DCCURRENTDENSITY)
     """
+
     AC = 1
     DC = 2
-class LefCurrentDensity(object): # TODO: Implement
-    def __init__(self, currentDensity, unitType: LefFloatType, typo: LefCurrentDensityType):
+
+
+class LefCurrentDensity(object):  # TODO: Implement
+    def __init__(
+        self, currentDensity, unitType: LefFloatType, typo: LefCurrentDensityType
+    ):
         self.type = typo
         self.floatType = unitType
-        if type(currentDensity) == LefDecimal:
+        if (
+            type(currentDensity) == LefDecimal
+            or type(currentDensity) != float
+            and type(currentDensity) == LefCurrentDensityTableValue
+        ):
             self.currentDensity = currentDensity
         elif type(currentDensity) == float:
             self.currentDensity = LefDecimal(currentDensity)
-        elif type(currentDensity) == LefCurrentDensityTableValue:
-            self.currentDensity = currentDensity
         else:
-            raise TypeError("LefCurrentDensity: currentDensity must be LefDecimal, float or a LefCurrentDensityTableValue")
+            raise TypeError(
+                "LefCurrentDensity: currentDensity must be LefDecimal, float or a LefCurrentDensityTableValue"
+            )
+
     def __str__(self):
         """_summary_
-        
+
         Raises:
             Unsupported: _description_
 
         Returns:
             _type_: _description_
         """
-        if type(self.currentDensity) == LefDecimal or type(self.currentDensity) == float:
-            return "{} {}".format(self.floatType.name, str(self.currentDensity))
+        if type(self.currentDensity) in [LefDecimal, float]:
+            return f"{self.floatType.name} {str(self.currentDensity)}"
         elif type(self.currentDensity) == LefCurrentDensityTableValue:
             return "{}\n{}".format(self.floatType.name, str(self.currentDensity))
 
-class LefAcCurrentDensity(LefCurrentDensity): # TODO: Implement
+
+class LefAcCurrentDensity(LefCurrentDensity):  # TODO: Implement
     def __init__(self, currentDensity, unitType: LefFloatType):
-        if type(currentDensity) is LefCurrentDensityTableValue:
-            if len(currentDensity.frequencies) is 0:
-                raise ValueError("LefAcCurrentDensity: frequencies must not be an empty list")
+        if (
+            type(currentDensity) is LefCurrentDensityTableValue
+            and len(currentDensity.frequencies) is 0
+        ):
+            raise ValueError(
+                "LefAcCurrentDensity: frequencies must not be an empty list"
+            )
         super().__init__(currentDensity, unitType, LefCurrentDensityType.AC)
-    
+
     def __str__(self):
-        ret = "ACCURRENTDENSITY\n"
-        ret += "\t{}\n".format(super().__str__())
+        ret = "ACCURRENTDENSITY\n" + "\t{}\n".format(super().__str__())
         ret += ";\n"
         return ret
 
-class LefDcCurrentDensity(LefCurrentDensity): # TODO: Implement
+
+class LefDcCurrentDensity(LefCurrentDensity):  # TODO: Implement
     def __init__(self, currentDensity, unitType: LefFloatType):
         if unitType is not LefFloatType.AVERAGE:
-            raise TypeError("LefDcCurrentDensity: unitType must be LefFloatType.AVERAGE")
-        
-        if type(currentDensity) is LefCurrentDensityTableValue:
-            if len(currentDensity.frequencies) > 0:
-                raise ValueError("LefDcCurrentDensity: frequencies must not be parsed")
+            raise TypeError(
+                "LefDcCurrentDensity: unitType must be LefFloatType.AVERAGE"
+            )
+
+        if (
+            type(currentDensity) is LefCurrentDensityTableValue
+            and len(currentDensity.frequencies) > 0
+        ):
+            raise ValueError("LefDcCurrentDensity: frequencies must not be parsed")
         super().__init__(currentDensity, unitType, LefCurrentDensityType.DC)
-    
+
     def __str__(self):
-        ret = "DCCURRENTDENSITY\n"
-        ret += "\t{}\n".format(super().__str__())
+        ret = "DCCURRENTDENSITY\n" + "\t{}\n".format(super().__str__())
         ret += ";\n"
         return ret
+
 
 class LefProperty(object):
     def __init__(self, propName, propValue):
@@ -1478,8 +1587,10 @@ class LefProperty(object):
             self.propValue = LefDecimal(propValue)
         else:
             raise TypeError("LefProperty: propValue must be LefDecimal or float")
+
     def __str__(self):
-        return "PROPERTY {} {}".format(self.propName, str(self.propValue))
+        return f"PROPERTY {self.propName} {str(self.propValue)}"
+
 
 class LefStatementType(Enum):
     """_summary_: LefStatementType
@@ -1494,22 +1605,25 @@ class LefStatementType(Enum):
         PIN     : Pin statement.
         PORT    : Port statement.
     """
-    MACRO   = 1
-    LAYER   = 2
-    SITE    = 3
-    VIA     = 4
+
+    MACRO = 1
+    LAYER = 2
+    SITE = 3
+    VIA = 4
     VIARULE = 5
-    OBS     = 6
-    PIN     = 7
-    PORT    = 8
-    
+    OBS = 6
+    PIN = 7
+    PORT = 8
+
+
 class LefStatement(object):
     """_summary_
     A parent class for all LEF statements.
     Args:
         object (_type_): LefStatement class object
     """
-    def __init__ (self, name:str, type:LefStatementType):
+
+    def __init__(self, name: str, type: LefStatementType):
         """_summary_
         The class object constructor.
         Args:
@@ -1518,11 +1632,11 @@ class LefStatement(object):
         """
         self.type = type
         self.name = name
-    
+
     def __str__(self):
         """_summary_
         The class object str description.
         Args:
             object (LefStatement): statement object
         """
-        return "LefStatement: {} {}".format(self.type.name, self.name)
+        return f"LefStatement: {self.type.name} {self.name}"
